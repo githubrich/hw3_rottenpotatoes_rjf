@@ -22,10 +22,20 @@ Background: movies have been added to database
   And I am on the RottenPotatoes home page
 
 Scenario: sort movies alphabetically
+  When I check "ratings_PG"
+    And I check "ratings_R"
+    And I check "ratings_G"
+    And I check "ratings_PG-13"
+  When I press "ratings_submit"
   When I follow "Movie Title"
-  # your steps here
+  Then the movies should be sorted by title_header
+  # your 3-8 steps here
 
 Scenario: sort movies in increasing order of release date
-  When i follow "Release Date"
-  # your steps here
-
+  When I check "ratings_PG"
+    And I check "ratings_R"
+    And I check "ratings_G"
+    And I check "ratings_PG-13"
+  When I press "ratings_submit"
+  When I follow "Release Date"
+  Then the movies should be sorted by release_date_header

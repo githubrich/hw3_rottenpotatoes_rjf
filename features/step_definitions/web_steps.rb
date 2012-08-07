@@ -50,6 +50,7 @@ When /^(?:|I )go to (.+)$/ do |page_name|
 end
 
 When /^(?:|I )press "([^"]*)"$/ do |button|
+  # debugger
   click_button(button)
 end
 
@@ -86,11 +87,18 @@ When /^(?:|I )select "([^"]*)" from "([^"]*)"$/ do |value, field|
   select(value, :from => field)
 end
 
+When /^(?:|I )click "([^"]*)"$/ do |field|
+  # debugger
+  check(field)
+end
+
 When /^(?:|I )check "([^"]*)"$/ do |field|
+  # debugger
   check(field)
 end
 
 When /^(?:|I )uncheck "([^"]*)"$/ do |field|
+  # debugger
   uncheck(field)
 end
 
@@ -106,6 +114,7 @@ Then /^(?:|I )should see "([^"]*)"$/ do |text|
   if page.respond_to? :should
     page.should have_content(text)
   else
+    # debugger
     assert page.has_content?(text)
   end
 end
@@ -252,3 +261,25 @@ end
 Then /^show me the page$/ do
   save_and_open_page
 end
+
+module Enumerable
+  def sorted?
+    each_cons(2).all? { |a, b| (a <=> b) <= 0 } # all? means neither false nor nil is returned during traversal of the collection
+  end
+end
+
+Then /^the movies should be sorted by (.+)$/ do |sort_field|
+  if (sort_field == "title_header")
+    col_index = 0
+  elsif (sort_field == "release_date_header")
+    col_index = 2
+  else
+    raise ArgumentError
+  end
+  values = all("table#movies tbody tr").collect { 
+    |row| row.all("td")[col_index].text 
+  }
+  # debugger
+  assert values.sorted?
+end
+

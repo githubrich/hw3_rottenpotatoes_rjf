@@ -4,8 +4,9 @@ Given /the following movies exist/ do |movies_table|
   movies_table.hashes.each do |movie|
     # each returned element will be a hash whose key is the table header.
     # you should arrange to add that movie to the database here.
+    Movie.create! movie
   end
-  flunk "Unimplemented"
+  assert movies_table.hashes.size == Movie.all.count
 end
 
 # Make sure that one string (regexp) occurs before or after another one
@@ -14,7 +15,9 @@ end
 Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
   #  ensure that that e1 occurs before e2.
   #  page.content  is the entire content of the page as a string.
-  flunk "Unimplemented"
+  titles = page.all("table#movies tbody tr td[1]").map {|t| t.text}
+  assert titles.index(e1) < titles.index(e2)
+  # flunk "Unimplemented"
 end
 
 # Make it easier to express checking or unchecking several boxes at once

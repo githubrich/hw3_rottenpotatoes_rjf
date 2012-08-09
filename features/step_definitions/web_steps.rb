@@ -270,16 +270,22 @@ end
 
 Then /^the movies should be sorted by (.+)$/ do |sort_field|
   if (sort_field == "title_header")
-    col_index = 0
+    column_index = 0
   elsif (sort_field == "release_date_header")
-    col_index = 2
+    column_index = 2
   else
     raise ArgumentError
   end
-  values = all("table#movies tbody tr").collect { 
-    |row| row.all("td")[col_index].text 
+  page_rows = page.all("table#movies tbody tr")
+  
+  values = page_rows.collect { 
+    |row| row.all("td")[column_index].text
   }
-  # debugger
+  
+  # if sort_field == "release_date_header"
+    # debugger
+  # end
+  
   assert values.sorted?
 end
 

@@ -22,11 +22,8 @@ Background: movies have been added to database
   And  I am on the RottenPotatoes home page
   
 Scenario: restrict to movies with 'PG' or 'R' ratings
-  When I check "ratings_PG"
-    And I check "ratings_R"
-    And I uncheck "ratings_G"
-    And I uncheck "ratings_PG-13"
-    And I uncheck "ratings_NC-17"
+  When I check the following ratings: ratings_PG, ratings_R
+    And I uncheck the following ratings: ratings_G, ratings_PG-13, ratings_NC-17
   When I press "ratings_submit"
   Then I should see "Amelie"
    And I should see "When Harry Met Sally"
@@ -38,18 +35,11 @@ Scenario: restrict to movies with 'PG' or 'R' ratings
    And I should not see "Chicken Run"
    And I should not see "The Help"
    And I should not see "Chocolat"
-  # enter step(s) to check the 'PG' and 'R' checkboxes
-  # enter step(s) to uncheck all other checkboxes
-  # enter step to "submit" the search form on the homepage
   # enter step(s) to ensure that PG and R movies are visible
   # enter step(s) to ensure that other movies are not visible
 
 Scenario: no ratings selected
-  When I uncheck "ratings_PG"
-    And I uncheck "ratings_R"
-    And I uncheck "ratings_G"
-    And I uncheck "ratings_PG-13"
-    And I uncheck "ratings_NC-17"
+  When I uncheck the following ratings: ratings_G, ratings_PG, ratings_PG-13, ratings_R, ratings_NC-17
   When I press "ratings_submit"
   Then I should not see "Amelie"
    And I should not see "When Harry Met Sally"
@@ -63,19 +53,7 @@ Scenario: no ratings selected
    And I should not see "Chocolat"
 
 Scenario: all ratings selected
-  When I check "ratings_PG"
-    And I check "ratings_R"
-    And I check "ratings_G"
-    And I check "ratings_PG-13"
-    And I check "ratings_NC-17"
+  When I check the following ratings: ratings_G, ratings_PG, ratings_PG-13, ratings_R, ratings_NC-17
   When I press "ratings_submit"
-  Then I should see "Amelie"
-   And I should see "When Harry Met Sally"
-   And I should see "The Terminator"
-   And I should see "The Incredibles"
-   And I should see "Raiders of the Lost Ark"
-   And I should see "Aladdin"
-   And I should see "2001: A Space Odyssey"
-   And I should see "Chicken Run"
-   And I should see "The Help"
-   And I should see "Chocolat"
+  Then I should see all of the movies
+

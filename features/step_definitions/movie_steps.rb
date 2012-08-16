@@ -45,3 +45,15 @@ Then /I should see all of the movies/ do
   assert Movie.all.count == all("table#movies tbody tr").count
 end
 
+Then /the director of "(.*)" should be "(.*)"/ do |e1, e2|
+  assert page.has_content?(e1)
+  assert page.has_content?(e2)
+end
+
+Then /The movie should not have text for the (.*) field/ do |field_name|
+  # puts page.all("ul#details li") => []
+  assert page.all("table#movies tbody tr").count == 0
+end
+
+# Director
+

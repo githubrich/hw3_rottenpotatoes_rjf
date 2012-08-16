@@ -50,6 +50,28 @@ class MoviesController < ApplicationController
     flash[:notice] = "#{@movie.title} was successfully updated."
     redirect_to movie_path(@movie)
   end
+  
+  def directed_by
+    # tciwih - the code I wish I had
+    if (params[:director] == nil) or (params[:director] == "") # sad path
+      redirect_to movies_path and return
+    end
+    @director = params[:director]
+    # debugger
+    @movies = Movie.find_in_movies(params[:director])
+    
+    # debugger
+    if @movies == nil
+      # debugger
+      params[:director] = ""
+      redirect_to movies_path and return
+    elsif (@movies.count == 0)
+      # debugger
+      params[:director] = ""
+      redirect_to movies_path and return
+    end
+    
+  end
 
   def destroy
     @movie = Movie.find(params[:id])

@@ -42,6 +42,7 @@ When /^(.*) within (.*[^:]):$/ do |step, parent, table_or_string|
 end
 
 Given /^(?:|I )am on (.+)$/ do |page_name|
+  puts path_to(page_name).to_s
   visit path_to(page_name)
 end
 
@@ -50,11 +51,11 @@ When /^(?:|I )go to (.+)$/ do |page_name|
 end
 
 When /^(?:|I )press "([^"]*)"$/ do |button|
-  # debugger
   click_button(button)
 end
 
 When /^(?:|I )follow "([^"]*)"$/ do |link|
+  # puts link.to_s
   click_link(link)
 end
 
@@ -88,17 +89,14 @@ When /^(?:|I )select "([^"]*)" from "([^"]*)"$/ do |value, field|
 end
 
 When /^(?:|I )click "([^"]*)"$/ do |field|
-  # debugger
   check(field)
 end
 
 When /^(?:|I )check "([^"]*)"$/ do |field|
-  # debugger
   check(field)
 end
 
 When /^(?:|I )uncheck "([^"]*)"$/ do |field|
-  # debugger
   uncheck(field)
 end
 
@@ -114,7 +112,6 @@ Then /^(?:|I )should see "([^"]*)"$/ do |text|
   if page.respond_to? :should
     page.should have_content(text)
   else
-    # debugger
     assert page.has_content?(text)
   end
 end
@@ -130,11 +127,13 @@ Then /^(?:|I )should see \/([^\/]*)\/$/ do |regexp|
 end
 
 Then /^(?:|I )should not see "([^"]*)"$/ do |text|
+  # debugger # can see vars
   if page.respond_to? :should
     page.should have_no_content(text)
   else
     assert page.has_no_content?(text)
   end
+  # debugger # vars out of scope
 end
 
 Then /^(?:|I )should not see \/([^\/]*)\/$/ do |regexp|
@@ -237,11 +236,12 @@ Then /^the "([^"]*)" checkbox(?: within (.*))? should not be checked$/ do |label
 end
  
 Then /^(?:|I )should be on (.+)$/ do |page_name|
+  # debugger
   current_path = URI.parse(current_url).path
   if current_path.respond_to? :should
-    current_path.should == path_to(page_name)
+    current_path.should == URI.escape(path_to(page_name))
   else
-    assert_equal path_to(page_name), current_path
+    assert_equal URI.escape(path_to(page_name)), current_path
   end
 end
 

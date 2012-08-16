@@ -289,3 +289,13 @@ Then /^the movies should be sorted by (.+)$/ do |sort_field|
   assert values.sorted?
 end
 
+When /^I confirm popup$/ do
+  b = page.driver.browser
+  debugger
+  page.driver.browser.switch_to.alert.accept    
+end
+
+When /^I dismiss popup$/ do
+  page.driver.browser.switch_to.alert.dismiss
+end
+

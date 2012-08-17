@@ -53,22 +53,24 @@ class MoviesController < ApplicationController
   
   def directed_by
     # tciwih - the code I wish I had
-    if (params[:director] == nil) or (params[:director] == "") # sad path
+    title = params[:title]
+    @movie = Movie.find_by_title(title)
+    if @movie == nil
+      flash[:notice] = "Error locating movie." # "Error locating movie #{title}."
       redirect_to movies_path and return
     end
-    @director = params[:director]
-    # debugger
-    @movies = Movie.find_in_movies(params[:director])
-    
-    # debugger
-    if @movies == nil
-      # debugger
-      params[:director] = ""
+
+    @director = @movie.director
+    if (@director == nil) or (@director == "") or (@director == " ") # sad path
+      flash[:notice] = "Movie has no director info." # "#{title} has no director info."
       redirect_to movies_path and return
-    elsif (@movies.count == 0)
-      # debugger
-      params[:director] = ""
-      redirect_to movies_path and return
+    else
+      @movies = Movie.find_in_movies(@director)
+      if @movies == nil
+        redirect_to movies_path
+      elsif (@movies.count == 0)
+        redirect_to movies_path and return
+      end
     end
     
   end
@@ -77,7 +79,7 @@ class MoviesController < ApplicationController
     @movie = Movie.find(params[:id])
     @movie.destroy
     flash[:notice] = "Movie '#{@movie.title}' deleted."
-    redirect_to movies_path
+    redirect_to movies_path and return
   end
 
 end

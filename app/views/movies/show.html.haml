@@ -19,9 +19,6 @@
 
 = link_to 'Edit', edit_movie_path(@movie)
 = button_to 'Delete', movie_path(@movie), :method => :delete, :confirm => 'Are you sure?'
--if (@movie.director == nil) or (@movie.director == "") or (@movie.director == " ")
-  = link_to 'Find Movies With Same Director', movies_path
--else
-  = link_to 'Find Movies With Same Director', movie_directed_by_path(@movie.director)
+= link_to 'Find Movies With Same Director', movie_directed_by_path(@movie.title)
 <br />
 = link_to 'Back to movie list', movies_path
